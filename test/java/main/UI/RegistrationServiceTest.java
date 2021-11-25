@@ -3,6 +3,7 @@ package main.UI;
 import main.Model.*;
 import main.Repository.CourseInMemoryRepository;
 import main.Repository.StudentInMemoryRepository;
+import main.Repository.TeacherInMemoryRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -14,8 +15,9 @@ class RegistrationServiceTest {
 
     CourseInMemoryRepository courseInMemoryRepository = new CourseInMemoryRepository();
     StudentInMemoryRepository studentInMemoryRepository= new StudentInMemoryRepository();
+    TeacherInMemoryRepository teacherInMemoryRepository= new TeacherInMemoryRepository();
 
-    RegistrationService registrationSystem = new RegistrationService(courseInMemoryRepository,studentInMemoryRepository);
+    RegistrationService registrationSystem = new RegistrationService(courseInMemoryRepository,studentInMemoryRepository,teacherInMemoryRepository);
 
     Teacher teacher1 = new Teacher("Dan", "Doe");
     Teacher teacher2 = new Teacher("Mary", "Jane");

@@ -38,4 +38,8 @@ public class Teacher extends Person{
     public void removeCourse(Course course){
         courses.remove(course);
     }
+
+    public void addCourse(Course course){
+        courses.add(course);
+    }
 }

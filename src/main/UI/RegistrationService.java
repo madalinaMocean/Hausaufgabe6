@@ -3,6 +3,7 @@ package main.UI;
 import main.Repository.Inheritable.CourseRepository;
 import main.Model.*;
 import main.Repository.Inheritable.StudentRepository;
+import main.Repository.Inheritable.TeacherRepository;
 import main.Repository.RepositoryException;
 
 import java.util.ArrayList;
@@ -13,10 +14,12 @@ public class RegistrationService {
 
     public CourseRepository courseRepository;
     public StudentRepository studentRepository;
+    public TeacherRepository teacherRepository;
 
-    public RegistrationService(CourseRepository courseRepository,StudentRepository studentRepository){
+    public RegistrationService(CourseRepository courseRepository,StudentRepository studentRepository,TeacherRepository teacherRepository){
         this.courseRepository=courseRepository;
         this.studentRepository=studentRepository;
+        this.teacherRepository=teacherRepository;
     }
 
     public void addCourse(int id, String courseName, Person courseTeacher, int maxEnrollment, int credits) throws ExceptionService {
@@ -39,6 +42,16 @@ public class RegistrationService {
         }
     }
 
+    public void addTeacher(int id, String firstName, String lastName) throws ExceptionService {
+        try {
+            Teacher teacher = new Teacher( id,  firstName, lastName);
+            teacherRepository.add(teacher);
+        }
+        catch(RepositoryException e){
+            throw  new ExceptionService("Teacher could not be created or added!");
+        }
+
+    }
 
 
     public boolean register( Course course,Student student){
@@ -61,6 +74,13 @@ public class RegistrationService {
         return true;
     }
 
+    public void teacherClaimCourse(Course course, Teacher teacher){
+        course.setCourseTeacher(teacher);
+        teacher.addCourse(course);
+        System.out.println("Teacher successfully claimed course!");
+    }
+
+
     public List<Course> retrieveCoursesWithFreePlaces() {
         List<Course> freePlacesCourses = new ArrayList<>();
         for (Course course : courseRepository.getAll()) {
@@ -78,6 +98,15 @@ public class RegistrationService {
     public List<Course> getAllCourses(){
         return new ArrayList<>(courseRepository.getAll());
     }
+
+    public List<Teacher> getAllTeachers(){
+        return new ArrayList<>(teacherRepository.getAll());
+    }
+
+    public List<Student> getAllStudents(){
+        return new ArrayList<>(studentRepository.getAll());
+    }
+
 
     public boolean deleteCourseByTeacher(Teacher teacher, Course course){
         if (!teacher.getCourses().contains(course)){
