@@ -1,12 +1,9 @@
 package main;
 
-import main.Repository.CourseInMemoryRepository;
-import main.Repository.StudentFileRepository;
+import main.Repository.*;
 import main.Model.Course;
 import main.Model.Student;
 import main.Model.Teacher;
-import main.Repository.StudentInMemoryRepository;
-import main.Repository.TeacherInMemoryRepository;
 import main.UI.ExceptionService;
 import main.UI.RegistrationService;
 
@@ -16,37 +13,14 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws ExceptionService {
-        /*Student s = new Student(0,"dan","podina");
-        Student s2 = new Student(1,"alex","dan");
-        Student s3 = new Student("dennis","mada");
-        Course c = new Course(1, "c1", new Teacher(), 1, 1);
-        s.addCourse(c);
-        StudentFileRepository sfr =  new StudentFileRepository("test.txt");
-//        sfr.add(s);
-//        sfr.add(s2);
-        sfr.update(s3, 3);
-        System.out.println(sfr.getAll());
-//        StudentInMemoryRepository studentInMemoryRepository = new StudentInMemoryRepository();
-//        studentInMemoryRepository.add(s);
-//        studentInMemoryRepository.add(s2);
-//        System.out.println(studentInMemoryRepository.getAll());
-//        studentInMemoryRepository.update(s3, 1);
-//        System.out.println(studentInMemoryRepository.getAll());
 
-         */
-        CourseInMemoryRepository courseRepository = new CourseInMemoryRepository();
-        StudentInMemoryRepository studentRepository= new StudentInMemoryRepository();
-        TeacherInMemoryRepository teacherRepository= new TeacherInMemoryRepository();
+        CourseFileRepository courseRepository = new CourseFileRepository("course.txt");
+        StudentFileRepository studentRepository= new StudentFileRepository("student.txt");
+        TeacherFileRepository teacherRepository= new TeacherFileRepository("teacher.txt");
 
         RegistrationService registrationSystem = new RegistrationService(courseRepository,studentRepository,teacherRepository);
 
-        registrationSystem.addCourse(1, "c1", new Teacher(), 1, 1);
-        registrationSystem.addCourse(2, "c2", new Teacher(), 4, 3);
-        registrationSystem.addCourse(3, "c3", new Teacher(), 2, 5);
-        registrationSystem.addCourse(4, "c4", new Teacher(), 3, 6);
 
-
-        Student s = new Student(0,"dan","podina");
 
         while(true) {
 
@@ -148,14 +122,168 @@ public class Main {
                     System.out.println(registrationSystem.getAllTeachers());
 
                 }
+                else if(layer2==2){
+                    Scanner scan3 = new Scanner(System.in);
+
+                    System.out.println("Enter the first name of the teacher that claims the course:");
+                    String firstname=scan3.nextLine();
+
+                    System.out.println("Enter the last name of the teacher that claims the course:");
+                    String lastname=scan3.nextLine();
+
+                    System.out.println("Enter the name of the course that is assigned to the previously given teacher:");
+                    String courseName=scan3.nextLine();
+
+                    Teacher teacher = registrationSystem.teacherRepository.findByFullName(firstname, lastname).get(0);
+                    Course course=registrationSystem.courseRepository.findByName(courseName).get(0);
+
+                    registrationSystem.teacherClaimCourse(course,teacher);
+                }
+                else if(layer2==3){
+                    Scanner scan3 = new Scanner(System.in);
+
+                    System.out.println("Enter the first name of the teacher that wants to delete a course from his course list:");
+                    String firstname=scan3.nextLine();
+
+                    System.out.println("Enter the last name of the teacher that wants to delete a course from his course list:");
+                    String lastname=scan3.nextLine();
+
+                    System.out.println("Enter the name of the course that is to be deleted:");
+                    String courseName=scan3.nextLine();
+
+                    Teacher teacher = registrationSystem.teacherRepository.findByFullName(firstname, lastname).get(0);
+                    Course course=registrationSystem.courseRepository.findByName(courseName).get(0);
+
+                    registrationSystem.deleteCourseByTeacher(teacher,course);
+                }
+                else if(layer2==4){
+                    Scanner scan3 = new Scanner(System.in);
+
+                    System.out.println("Enter the teacher firstname you want to find teacher by:");
+                    String firstname = scan3.nextLine();
+                    System.out.println(firstname);
+                    System.out.println(registrationSystem.teacherRepository.findByFirstName(firstname));
+                }
+                else if(layer2==5){
+                    Scanner scan3 = new Scanner(System.in);
+
+                    System.out.println("Enter the teacher lastname you want to find teacher by:");
+                    String lastname = scan3.nextLine();
+                    System.out.println(lastname);
+                    System.out.println(registrationSystem.teacherRepository.findByLastName(lastname));
+                }
+                else if(layer2==6){
+                    Scanner scan3 = new Scanner(System.in);
+
+                    System.out.println("You will be going to enter the teacher full name that you want to find teacher by. First, enter his first name:");
+                    String firstname = scan3.nextLine();
+                    System.out.println(firstname);
+
+                    System.out.println("Now enter teacher lastname:");
+                    String lastname = scan3.nextLine();
+                    System.out.println(lastname);
+
+                    System.out.println(registrationSystem.teacherRepository.findByFullName(firstname,lastname));
+                }
+                else if (layer2==7){
+                    System.out.println(registrationSystem.getAllTeachers());
+                }
 
             }
-            //else{
+            else if(layer1==3){
+                System.out.println("Pick operation on Students:");
+                System.out.println("1 for adding a Student:");
+                System.out.println("2 for registering Student to a Course:");
+                System.out.println("3 for retrieving students enrolled for a course:");
+                System.out.println("4 for finding Student by firstname:");
+                System.out.println("5 for finding Student by lastname:");
+                System.out.println("6 for finding Student by fullname:");
+                System.out.println("7 for sorting students by total credits:");
+                System.out.println("8 for printing Student list:");
+                Scanner scan2 = new Scanner(System.in);
+                int layer2 = scan2.nextInt();
 
-            //}
+                if (layer2==1){
+                    Scanner scan3 = new Scanner(System.in);
 
+                    System.out.println("Enter student id:");
+                    int id=Integer.parseInt(scan3.nextLine());
 
+                    System.out.println("Enter student firstname:");
+                    String firstname=scan3.nextLine();
+
+                    System.out.println("Enter student lastname:");
+                    String lastname=scan3.nextLine();
+
+                    registrationSystem.addStudent(id,firstname,lastname);
+
+                    System.out.println(registrationSystem.getAllStudents());
+
+                }
+                else if(layer2==2){
+                    Scanner scan3 = new Scanner(System.in);
+
+                    System.out.println("Enter the name of the course you want to register a student to:");
+                    String courseName=scan3.nextLine();
+
+                    System.out.println("Enter the first name of the student you want to register to the course:");
+                    String firstname=scan3.nextLine();
+
+                    System.out.println("Enter the last name of the student you want to register to the course:");
+                    String lastname=scan3.nextLine();
+
+                    Student student = registrationSystem.studentRepository.findByFullName(firstname,lastname).get(0);
+                    Course course=registrationSystem.courseRepository.findByName(courseName).get(0);
+
+                    registrationSystem.register(course,student);
+                }
+                else if(layer2==3){
+                    Scanner scan3 = new Scanner(System.in);
+
+                    System.out.println("Enter the course name of which participants you want to see:");
+                    String courseName=scan3.nextLine();
+
+                    Course course=registrationSystem.courseRepository.findByName(courseName).get(0);
+
+                    System.out.println(registrationSystem.retrieveStudentsEnrolledForACourse(course));
+
+                }
+                else if(layer2==4){
+                    Scanner scan3 = new Scanner(System.in);
+
+                    System.out.println("Enter the student firstname you want to find student by:");
+                    String firstname = scan3.nextLine();
+                    System.out.println(firstname);
+                    System.out.println(registrationSystem.studentRepository.findByFirstName(firstname));
+                }
+                else if(layer2==5){
+                    Scanner scan3 = new Scanner(System.in);
+
+                    System.out.println("Enter the student lastname you want to find student by:");
+                    String lastname = scan3.nextLine();
+                    System.out.println(lastname);
+                    System.out.println(registrationSystem.studentRepository.findByLastName(lastname));
+                }
+                else if(layer2==6){
+                    Scanner scan3 = new Scanner(System.in);
+
+                    System.out.println("You will be going to enter the student full name that you want to find student by. First, enter his first name:");
+                    String firstname = scan3.nextLine();
+                    System.out.println(firstname);
+
+                    System.out.println("Now enter student lastname:");
+                    String lastname = scan3.nextLine();
+                    System.out.println(lastname);
+
+                    System.out.println(registrationSystem.studentRepository.findByFullName(firstname,lastname));
+                }
+                else if(layer2==7){
+                    System.out.println(registrationSystem.studentRepository.sortByTotalCredits());
+                }
+                else if(layer2==8){
+                    System.out.println(registrationSystem.getAllStudents());
+                }
+            }
         }
-
     }
 }
