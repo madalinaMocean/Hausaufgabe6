@@ -14,9 +14,9 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws ExceptionService {
 
-        CourseFileRepository courseRepository = new CourseFileRepository("course.txt");
-        StudentFileRepository studentRepository= new StudentFileRepository("student.txt");
-        TeacherFileRepository teacherRepository= new TeacherFileRepository("teacher.txt");
+        CourseJDBCRepository courseRepository = new CourseJDBCRepository();
+        StudentJDBCRepository studentRepository= new StudentJDBCRepository();
+        TeacherJDBCRepository teacherRepository= new TeacherJDBCRepository();
 
         RegistrationService registrationSystem = new RegistrationService(courseRepository,studentRepository,teacherRepository);
 

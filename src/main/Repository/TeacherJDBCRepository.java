@@ -9,9 +9,13 @@ public class TeacherJDBCRepository extends TeacherInMemoryRepository{
     static final String DB_URL = "jdbc:mysql://localhost/university";
     static final String USER = "root";
     static final String PASS = "Admitere2020@";
-    static final String QUERY = "SELECT ID, firstName, lastName FROM teacher";
+    static final String QUERY = "SELECT Id, firstName, lastName FROM teacher";
 
-    public void main(String[] args) {
+    public TeacherJDBCRepository() {
+        readFromFile();
+    }
+
+    public void readFromFile() {
         // Open a connection
         try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
             Statement stmt = conn.createStatement();
@@ -19,12 +23,8 @@ public class TeacherJDBCRepository extends TeacherInMemoryRepository{
             // Extract data from result set
             while (rs.next()) {
                 // Retrieve by column name
-                System.out.print("Id: " + rs.getInt("Id"));
-                System.out.print(", firstName: " + rs.getString("firstName"));
-                System.out.print(", lastName: " + rs.getString("lastName"));
-                System.out.println();
-                Teacher t1= new Teacher(rs.getInt("Id"),rs.getString("firstName"),rs.getString("lastName"));
-                super.add(t1);
+                Teacher teacher= new Teacher(rs.getInt("Id"),rs.getString("firstName"),rs.getString("lastName"));
+                super.add(teacher); //adding to repo
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -32,15 +32,29 @@ public class TeacherJDBCRepository extends TeacherInMemoryRepository{
 
 
     }
-    private void readFromFile(){
 
-    }
     private void writeToFile(){
+        try {
+            Connection conn=DriverManager.getConnection(DB_URL,USER,PASS);
+            Statement stmt=conn.createStatement();
+
+            for (Teacher Teacher : findAll()) { // write each teacher to file
+                String Id = Teacher.getId().toString();
+                String firstName = Teacher.getFirstName();
+                String lastName = Teacher.getLastName();
+
+                String sqlQuery2="INSERT INTO teacher(Id,firstName,lastName) VALUES ('"+Id+"','"+firstName+"','"+lastName+"')";
+                stmt.executeUpdate(sqlQuery2);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
+
     @Override
     public Teacher add(Teacher el) {
-        el.setId(getNextId());
         super.add(el);
         writeToFile();
         return el;
