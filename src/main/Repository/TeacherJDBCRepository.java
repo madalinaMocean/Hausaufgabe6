@@ -38,20 +38,47 @@ public class TeacherJDBCRepository extends TeacherInMemoryRepository{
             Connection conn=DriverManager.getConnection(DB_URL,USER,PASS);
             Statement stmt=conn.createStatement();
 
+            String sqlQuery1="DELETE FROM teacher";
+            stmt.executeUpdate(sqlQuery1);
+
             for (Teacher Teacher : findAll()) { // write each teacher to file
                 String Id = Teacher.getId().toString();
                 String firstName = Teacher.getFirstName();
                 String lastName = Teacher.getLastName();
 
+
                 String sqlQuery2="INSERT INTO teacher(Id,firstName,lastName) VALUES ('"+Id+"','"+firstName+"','"+lastName+"')";
+                System.out.println(sqlQuery2);
                 stmt.executeUpdate(sqlQuery2);
 
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
+
+//    private void deleteFromFile(int id){
+//        try {
+//            Connection conn=DriverManager.getConnection(DB_URL,USER,PASS);
+//            Statement stmt=conn.createStatement();
+//
+//
+//            for (Teacher Teacher : findAll()) { // write each teacher to file
+//                String Id = Teacher.getId().toString();
+//                String firstName = Teacher.getFirstName();
+//                String lastName = Teacher.getLastName();
+//
+//                if(Id.equals(Integer.toString(id))){
+//                    String sqlQuery2="DELETE FROM teacher(Id,firstName,lastName) WHERE Id="+Id+"";
+//                    //String sqlQuery2="INSERT INTO teacher(Id,firstName,lastName) VALUES ('"+Id+"','"+firstName+"','"+lastName+"')";
+//                    stmt.executeUpdate(sqlQuery2);
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
+
 
     @Override
     public Teacher add(Teacher el) {

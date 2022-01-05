@@ -30,7 +30,7 @@ public class Student extends Person{
 
     @Override
     public String toString(){ // to add enrolledCourses
-        String str=this.Id+" "+firstName+" "+lastName;
+        String str=this.Id+" "+firstName+" "+lastName+" "+enrolledCourses;
         return str;
     }
 

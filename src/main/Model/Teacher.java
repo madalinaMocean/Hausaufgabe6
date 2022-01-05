@@ -30,7 +30,7 @@ public class Teacher extends Person{
 
     @Override
     public String toString(){ // to add List<Course> courses
-        String str=this.Id+" "+firstName+" "+lastName;
+        String str=this.Id+" "+firstName+" "+lastName+" "+courses;
         return str;
     }
 

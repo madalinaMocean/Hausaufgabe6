@@ -44,6 +44,7 @@ public class Main {
                 System.out.println("5 for sorting Courses by maxEnrollment:");
                 System.out.println("6 for retrieving Courses with free places:");
                 System.out.println("7 for printing Courses list:");
+                System.out.println("8 for deleting a Course:");
                 System.out.println("Enter choice:");
                 Scanner scan2 = new Scanner(System.in);
                 int layer2 = scan2.nextInt();
@@ -88,6 +89,21 @@ public class Main {
                 else if (layer2==7){
                     System.out.println(registrationSystem.getAllCourses());
                 }
+                else if (layer2==8){
+                    Scanner scan3 = new Scanner(System.in);
+
+                    System.out.println("Enter existing Course id you want to delete:");
+                    int id=Integer.parseInt(scan3.nextLine());
+
+                    System.out.println("Enter existing Course name:");
+                    String name=scan3.nextLine();
+
+                    Course course= registrationSystem.courseRepository.findByName(name).get(0);
+                    //registrationSystem.addTeacher(id,firstname,lastname);
+                    registrationSystem.deleteCourse(course);
+
+                    System.out.println(registrationSystem.getAllCourses());
+                }
 
             }
 
@@ -101,6 +117,7 @@ public class Main {
                 System.out.println("5 for finding Teacher by lastname:");
                 System.out.println("6 for finding Teacher by fullname:");
                 System.out.println("7 for printing Teacher list:");
+                System.out.println("8 for deleting a Teacher:");
                 System.out.println("Enter choice:");
                 Scanner scan2 = new Scanner(System.in);
                 int layer2 = scan2.nextInt();
@@ -188,6 +205,24 @@ public class Main {
                 else if (layer2==7){
                     System.out.println(registrationSystem.getAllTeachers());
                 }
+                else if (layer2==8){
+                    Scanner scan3 = new Scanner(System.in);
+
+                    System.out.println("Enter existing teacher id you want to delete:");
+                    int id=Integer.parseInt(scan3.nextLine());
+
+                    System.out.println("Enter existing teacher firstname:");
+                    String firstname=scan3.nextLine();
+
+                    System.out.println("Enter existing teacher lastname:");
+                    String lastname=scan3.nextLine();
+
+                    Teacher teacher= registrationSystem.teacherRepository.findByFullName(firstname, lastname).get(0);
+                    //registrationSystem.addTeacher(id,firstname,lastname);
+                    registrationSystem.deleteTeacher(teacher);
+
+                    System.out.println(registrationSystem.getAllTeachers());
+                }
 
             }
             else if(layer1==3){
@@ -200,6 +235,7 @@ public class Main {
                 System.out.println("6 for finding Student by fullname:");
                 System.out.println("7 for sorting students by total credits:");
                 System.out.println("8 for printing Student list:");
+                System.out.println("9 for deleting a Student:");
                 Scanner scan2 = new Scanner(System.in);
                 int layer2 = scan2.nextInt();
 
@@ -236,6 +272,8 @@ public class Main {
                     Course course=registrationSystem.courseRepository.findByName(courseName).get(0);
 
                     registrationSystem.register(course,student);
+
+                    System.out.println(student.getEnrolledCourses());
                 }
                 else if(layer2==3){
                     Scanner scan3 = new Scanner(System.in);
@@ -281,6 +319,24 @@ public class Main {
                     System.out.println(registrationSystem.studentRepository.sortByTotalCredits());
                 }
                 else if(layer2==8){
+                    System.out.println(registrationSystem.getAllStudents());
+                }
+                else if (layer2==9){
+                    Scanner scan3 = new Scanner(System.in);
+
+                    System.out.println("Enter existing student id you want to delete:");
+                    int id=Integer.parseInt(scan3.nextLine());
+
+                    System.out.println("Enter existing student firstname:");
+                    String firstname=scan3.nextLine();
+
+                    System.out.println("Enter existing student lastname:");
+                    String lastname=scan3.nextLine();
+
+                    Student student= registrationSystem.studentRepository.findByFullName(firstname, lastname).get(0);
+                    //registrationSystem.addTeacher(id,firstname,lastname);
+                    registrationSystem.deleteStudent(student);
+
                     System.out.println(registrationSystem.getAllStudents());
                 }
             }

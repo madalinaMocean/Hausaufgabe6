@@ -124,5 +124,26 @@ public class RegistrationService {
     }
     // course to teacher controller function
 
+    public void deleteCourse(Course course){
+        Teacher teacher= (Teacher) course.getCourseTeacher();
+        teacher.removeCourse(course);
+        List<Student> students=(List<Student>) course.getStudentsEnrolled();
+        for (Student s: students
+             ) {
+            s.removeCourse(course);
+        }
+        courseRepository.delete(course);
+    }
+
+    public void deleteTeacher(Teacher teacher){
+        courseRepository.getAll().forEach(Course::removeCourseTeacher);
+        teacherRepository.delete(teacher);
+    }
+
+    public void deleteStudent(Student student){
+        courseRepository.getAll().forEach(e -> e.removeStudent(student));
+        studentRepository.delete(student);
+    }
+
 }
 

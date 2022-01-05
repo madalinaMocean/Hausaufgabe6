@@ -2,6 +2,7 @@ package main.Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Course implements Identifiable<Integer>{
     private int Id;
@@ -27,6 +28,7 @@ public class Course implements Identifiable<Integer>{
         this.studentsEnrolled = new ArrayList<>();
         this.credits = credits;
     }
+
 
 //    public Course() {
 //        this.Id = 0;
@@ -106,5 +108,14 @@ public class Course implements Identifiable<Integer>{
     public void clearList(){
         studentsEnrolled.clear();
     }
+
+    public void removeCourseTeacher(){
+        this.courseTeacher= null;
+    }
+
+    public void removeStudent(Student student){
+        studentsEnrolled.remove(student);
+    }
+
 
 }

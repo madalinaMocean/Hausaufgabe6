@@ -37,6 +37,9 @@ public class CourseJDBCRepository extends CourseInMemoryRepository{
             Connection conn=DriverManager.getConnection(DB_URL,USER,PASS);
             Statement stmt=conn.createStatement();
 
+            String sqlQuery1="DELETE FROM course";
+            stmt.executeUpdate(sqlQuery1);
+
             for (main.Model.Course Course : findAll()) { // write each course to file
                 String Id = Course.getId().toString();
                 String courseName = Course.getCourseName();

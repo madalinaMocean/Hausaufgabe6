@@ -1,11 +1,10 @@
 package main.UI;
 
 import main.Model.*;
-import main.Repository.CourseInMemoryRepository;
-import main.Repository.StudentInMemoryRepository;
-import main.Repository.TeacherInMemoryRepository;
+import main.Repository.*;
 import org.junit.jupiter.api.Test;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,5 +68,50 @@ class RegistrationServiceTest {
         assert(!teacher1.getCourses().isEmpty());
         registrationSystem.deleteCourseByTeacher(teacher1, course1);
         assert(teacher1.getCourses().isEmpty());
+    }
+
+    @Test
+    void jdbcTest() throws ExceptionService {
+
+        final String DB_URL = "jdbc:mysql://localhost/university";
+        final String USER = "root";
+        final String PASS = "Admitere2020@";
+        final String QUERY1 = "select count(*) as count from course ;";
+        final String QUERY2 = "select count(*) as count from teacher ;";
+        final String QUERY3 = "select count(*) as count from student ;";
+        final String deleteQUERY1 = "delete from course where course.id=99;";
+        final String deleteQUERY2=" delete from teacher where teacher.id=99;";
+        final String deleteQUERY3 ="delete from student where student.id=99;";
+
+        CourseJDBCRepository courseJDBCRepository = new CourseJDBCRepository();
+        StudentJDBCRepository studentJDBCRepository= new StudentJDBCRepository();
+        TeacherJDBCRepository teacherJDBCRepository= new TeacherJDBCRepository();
+
+        RegistrationService registrationSystem = new RegistrationService(courseJDBCRepository,studentJDBCRepository,teacherJDBCRepository);
+
+        registrationSystem.addStudent(99,"daria","dob");
+
+        registrationSystem.addTeacher(99,"andreea","car");
+
+        registrationSystem.addCourse(99,"map",null,6,6);
+
+
+        try(Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            Statement stmt1 = conn.createStatement();
+            Statement stmt2 = conn.createStatement();
+            ResultSet rs1 = stmt1.executeQuery(QUERY1);){
+
+            while (rs1.next()) {
+                assert(rs1.getInt("count")==1);
+            }
+
+
+            stmt2.executeUpdate(deleteQUERY1);
+            stmt2.executeUpdate(deleteQUERY2);
+            stmt2.executeUpdate(deleteQUERY3);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

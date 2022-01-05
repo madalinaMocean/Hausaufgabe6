@@ -36,6 +36,8 @@ public class StudentJDBCRepository extends StudentInMemoryRepository {
             Connection conn=DriverManager.getConnection(DB_URL,USER,PASS);
             Statement stmt=conn.createStatement();
 
+            String sqlQuery1="DELETE FROM student";
+            stmt.executeUpdate(sqlQuery1);
 
             for (main.Model.Student Student : findAll()) { // write each student to file
                 String Id = Student.getId().toString();
