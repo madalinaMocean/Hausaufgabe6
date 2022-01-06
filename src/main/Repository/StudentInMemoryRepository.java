@@ -34,5 +34,4 @@ public class StudentInMemoryRepository extends AbstractRepository< Integer, Stud
                 .collect(Collectors.toList());
     }
 
-
 }

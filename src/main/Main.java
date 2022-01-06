@@ -11,6 +11,10 @@ import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Scanner;
 
+
+import static main.UI.StudentView.runStudentView;
+import static main.UI.TeacherView.runTeacherView;
+
 public class Main {
     public static void main(String[] args) throws ExceptionService {
 
@@ -20,6 +24,8 @@ public class Main {
 
         RegistrationService registrationSystem = new RegistrationService(courseRepository,studentRepository,teacherRepository);
 
+        //runTeacherView();
+        //runStudentView();
 
 
         while(true) {
